@@ -1,6 +1,6 @@
 module Api
   class AuthController < ApplicationController
-    # before_action :authorized, only: [:auto_login]
+    before_action :authorized, only: [:auto_login]
     def login
       @user = User.find_by(email: params[:email])
       if @user && @user.authenticate(params[:password])
@@ -13,9 +13,9 @@ module Api
       end
     end
 
-    #Oauth認証とかで使用する場合のみ
-    # def auto_login
-    #   render json: {user: {email: @current_user.email, id: @current_user.id,name: @current_user.name}}
-    # end
+    #元々tokenが存在する時のみ使用する
+    def auto_login
+      render json: {user: {email: @current_user.email, id: @current_user.id,name: @current_user.name}}
+    end
   end
 end
