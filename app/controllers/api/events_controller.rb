@@ -5,8 +5,8 @@ module Api
     # GET /events
     # GET /events.json
     def index
-      @events = Event.find_by(user_id: @current_user.id)
-      render json: @events, status: :ok
+      @events = Event.where(user_id: @current_user.id)
+      render json: {events: @events}, status: :ok
     end
 
     #シンプルに全てのeventsをloginなしで確認する用
@@ -24,20 +24,18 @@ module Api
     # POST /events
     # POST /events.json
     def create
-      puts @current_user
       @event = @current_user.events.new(event_params)
-      if @event.valid?
-        render json: @event
-      else
-        render json: @event.errors, status: :unprocessable_entity
-      end
-      # if @event.save
-      #   payload = {user_id:@event.id}
-      #   token = encode_token(payload)
-      #   render json: {user:@event, token: token}, status: :created, location: api_event_url(@event)
+      #event チェック用のコード
+      # if @event.valid?
+      #   render json: @event, status: :ok
       # else
-      #   render json: {errors:@event.errors }, status: :unprocessable_entity
+      #   render json: {event: @event, errors: @event.errors }, status: :bad_request
       # end
+      if @event.save
+        render json: @event, status: :created, location: api_event_url(@event)
+      else
+        render json: {errors:@event.errors }, status: :unprocessable_entity
+      end
     end
 
     # PATCH/PUT /events/1
@@ -53,7 +51,8 @@ module Api
     # DELETE /events/1
     # DELETE /events/1.json
     def destroy
-    @event.destroy
+      @event.destroy
+      render json: {message: "イベントを削除しました."}, status: :ok
     end
 
     private
@@ -64,7 +63,7 @@ module Api
 
       # Only allow a list of trusted parameters through.
       def event_params
-        params.require(:event).permit(:title, :memo, :date)
+        params.require(:event).permit(:title, :memo, :year, :month, :date)
       end
   end
 end
