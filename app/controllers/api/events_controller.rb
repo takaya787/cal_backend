@@ -5,8 +5,8 @@ module Api
     # GET /events
     # GET /events.json
     def index
-      @events = Event.find_by(user_id: @current_user.id)
-      render json: @events, status: :ok
+      @events = Event.where(user_id: @current_user.id)
+      render json: {events: @events}, status: :ok
     end
 
     #シンプルに全てのeventsをloginなしで確認する用
