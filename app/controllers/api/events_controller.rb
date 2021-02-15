@@ -25,6 +25,12 @@ module Api
     # POST /events.json
     def create
       @event = @current_user.events.new(event_params)
+      #event チェック用のコード
+      # if @event.valid?
+      #   render json: @event, status: :ok
+      # else
+      #   render json: {event: @event, errors: @event.errors }, status: :bad_request
+      # end
       if @event.save
         render json: @event, status: :created, location: api_event_url(@event)
       else
@@ -57,7 +63,7 @@ module Api
 
       # Only allow a list of trusted parameters through.
       def event_params
-        params.require(:event).permit(:title, :memo, :date)
+        params.require(:event).permit(:title, :memo, :year, :month, :date)
       end
   end
 end

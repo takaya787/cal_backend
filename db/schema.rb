@@ -18,7 +18,9 @@ ActiveRecord::Schema.define(version: 2021_02_14_054410) do
   create_table "events", force: :cascade do |t|
     t.string "title"
     t.text "memo"
-    t.date "date"
+    t.integer "year"
+    t.integer "month"
+    t.integer "date"
     t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
