@@ -24,20 +24,12 @@ module Api
     # POST /events
     # POST /events.json
     def create
-      puts @current_user
       @event = @current_user.events.new(event_params)
-      if @event.valid?
-        render json: @event
+      if @event.save
+        render json: @event, status: :created, location: api_event_url(@event)
       else
-        render json: @event.errors, status: :unprocessable_entity
+        render json: {errors:@event.errors }, status: :unprocessable_entity
       end
-      # if @event.save
-      #   payload = {user_id:@event.id}
-      #   token = encode_token(payload)
-      #   render json: {user:@event, token: token}, status: :created, location: api_event_url(@event)
-      # else
-      #   render json: {errors:@event.errors }, status: :unprocessable_entity
-      # end
     end
 
     # PATCH/PUT /events/1
@@ -53,7 +45,8 @@ module Api
     # DELETE /events/1
     # DELETE /events/1.json
     def destroy
-    @event.destroy
+      @event.destroy
+      render json: {message: "イベントを削除しました."}, status: :ok
     end
 
     private
