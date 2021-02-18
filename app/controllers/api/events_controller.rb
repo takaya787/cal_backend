@@ -10,6 +10,7 @@ module Api
     end
 
     #シンプルに全てのeventsをloginなしで確認する用
+    # GET /events/all
     def all
       @events = Event.all
       render json: @events
