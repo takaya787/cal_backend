@@ -1,6 +1,6 @@
 module Api
   class TasksController < ApplicationController
-    before_action :set_task, only: %i[ show update destroy ]
+    before_action :set_task, only: %i[ show change update destroy ]
     before_action :authorized, except: [:all]
 
     # GET /tasks
@@ -38,6 +38,18 @@ module Api
         render json: @task, status: :created, location: api_task_url(@task)
       else
         render json: {errors:@task.errors }, status: :unprocessable_entity
+      end
+    end
+
+    #taskのcompletedを変更
+    # GET /tasks/change/1
+    def change
+      @task.completed = !@task.completed
+
+      if @task.save
+        render json:@task, status: :ok
+      else
+        render json:@task.errors, status: :unprocessable_entity
       end
     end
 
