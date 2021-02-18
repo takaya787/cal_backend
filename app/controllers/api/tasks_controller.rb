@@ -7,7 +7,7 @@ module Api
     # GET /tasks.json
     def index
       @tasks = Task.where(user_id: @current_user.id)
-      render json: @tasks, status: :ok
+      render json: {tasks: @tasks}, status: :ok
     end
 
     #シンプルに全てのtasksをloginなしで確認する用
