@@ -67,6 +67,7 @@ module Api
     # DELETE /tasks/1.json
     def destroy
      @task.destroy
+     render json: {message: "タスクを削除しました.", task: @task}, status: :ok
     end
 
     private
