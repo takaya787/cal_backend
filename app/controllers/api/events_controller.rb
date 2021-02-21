@@ -53,7 +53,7 @@ module Api
     # DELETE /events/1.json
     def destroy
       @event.destroy
-      render json: {message: "イベントを削除しました."}, status: :ok
+      render json: {message: "イベントを削除しました.", event: @event}, status: :ok
     end
 
     private
